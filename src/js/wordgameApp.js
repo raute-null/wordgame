@@ -1,16 +1,19 @@
-var TIME_PER_GAME = 40; // constant amount of seconds per game
-var KEYCODE_BACKSPACE = 8;
-var KEYCODE_DELETE = 46;
-
 // module for the game app. Bundling all controllers within this one module since it's a rather small application
 angular.module('wordgameApp', ['ngRoute'])
+
   // general controller for the 'how to play the game' page
   .controller('MainCtrl', function($scope) {
-    // TODO mk
+    // TODO mk: is this controller needed at all? The dummy one could be sufficient in this case...
   })
+
 
   // controller for the actual game
   .controller('GameCtrl', function($scope) {
+
+    // define some constants
+    var KEYCODE_BACKSPACE = 8;
+    var KEYCODE_DELETE = 46;
+    var TIME_PER_GAME = 40; // constant amount of seconds per game
 
     $scope.userName = ""; // holds the current user's name
     $scope.userNameEntered = false; // no user name set in the beginning
@@ -20,14 +23,14 @@ angular.module('wordgameApp', ['ngRoute'])
     $scope.currentUnmangledWord = ""; // the word that we're currently looking for
     $scope.currentMangledWord = ""; // the mangled version of the word that we're currently looking for
     $scope.currentWordInput = ""; // the user's input
+    $scope.wordsForGameRound = [];
 
     /**
      * Starts the actual game.
      */
     $scope.startGame = function() {
-
         console.log("Game started!"); // TODO mk
-        console.log("Welcome user " + $scope.userName);
+        console.log("Welcome user " + $scope.userName); // TODO mk
 
         $scope.userNameEntered = true;
 
@@ -35,16 +38,16 @@ angular.module('wordgameApp', ['ngRoute'])
         $scope.gameScore = 0;
         $scope.remainingTime = TIME_PER_GAME;
 
-        // TODO mk: load the list of words, mingle them and then start a timer and show word after word
-
-        $scope.nextWord();
-
+        // load list of words
+        $scope.loadWordList();
     };
 
     /**
      * Loads a list of words for the game.
      */
     $scope.loadWordList = function() {
+        console.log("Loading words..."); // TODO mk
+
         // TODO mk: words need to be fetched via REST call
 
         // TODO mk: hard-coded for now...
@@ -64,19 +67,71 @@ angular.module('wordgameApp', ['ngRoute'])
             { id: 13, word: "potato" }
           ];
 
+        $scope.mangleWords();
     };
+
+    /**
+     * Mangles the words by bringing the characters of the words into a random order. The words are also mixed up in
+     * their ordering. The correct (unmangled) word and the mangled one are then put into an array of words for this
+     * game round.
+     */
+    $scope.mangleWords = function() {
+        console.log("Mangling words..."); // TODO mk
+
+        $scope.wordsForGameRound = [];
+
+        shuffle($scope.words);
+
+        // iterate over each word and store the original and mangled version in an array of words for this game round
+        angular.forEach($scope.words, function(value, key) {
+            var wordEntry = {};
+            wordEntry.original = value.word.toUpperCase();
+            wordEntry.mangled = mangleWord(wordEntry.original);
+            $scope.wordsForGameRound.push(wordEntry);
+        });
+
+        // words are mangled now. Time to play!
+        nextWord();
+    };
+
+    /**
+     * Shuffles array in place.
+     * @param {Array} arr items The array containing the items.
+     */
+    function shuffle(arr) {
+        var j, x, i;
+        for (i = arr.length; i; i--) {
+            j = Math.floor(Math.random() * i);
+            x = arr[i - 1];
+            arr[i - 1] = arr[j];
+            arr[j] = x;
+        }
+    }
+
+    /**
+     * Takes the given word and mangles it by putting its characters into a random order.
+     *
+     * @param originalWord the original (unmangled) word
+     * @return the mangled version of the given word
+     */
+    function mangleWord(originalWord) {
+        var wordAsArray = originalWord.split("");
+        shuffle(wordAsArray)
+        return wordAsArray.join("");
+    }
 
     /**
      * Loads the next word from the list, creates the mangled version of it and calculates the maximum amount of points
      * for it.
      */
-    $scope.nextWord = function() {
+    function nextWord() {
         // reset user input
         $scope.currentWordInput = "";
 
-        // TODO mk: get next word from list
-        $scope.currentUnmangledWord = "TEST"; // TODO mk: hard-coded for now...
-        $scope.currentMangledWord = "ESTT";
+        // get next word from the list
+        var nextWordEntry = $scope.wordsForGameRound.pop();
+        $scope.currentUnmangledWord = nextWordEntry.original;
+        $scope.currentMangledWord = nextWordEntry.mangled;
 
         console.log("The next word that we're looking for is: " + $scope.currentUnmangledWord); // TODO mk
         console.log("Mangled into: " + $scope.currentMangledWord); // TODO mk
@@ -112,7 +167,7 @@ angular.module('wordgameApp', ['ngRoute'])
 
             console.log("Word found! Points added: " + $scope.currentWordScore + ". Going to next one."); // TODO mk
 
-            $scope.nextWord();
+            nextWord();
         }
 
         // TODO mk: in case the current score for this word is 0 we could switch to the next one...
@@ -137,6 +192,7 @@ angular.module('wordgameApp', ['ngRoute'])
 
     // TODO mk
   })
+
 
   // controller for the highscore list
   .controller('HighscoreCtrl', function($scope) {
@@ -184,7 +240,6 @@ angular.module('wordgameApp', ['ngRoute'])
           });
           return orderedEntries;
       };
-
   })
 
 
