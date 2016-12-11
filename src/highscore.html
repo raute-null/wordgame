@@ -1,0 +1,31 @@
+<html ng-app="highscoreApp">
+  <head>
+    <meta charset="utf8" />
+    <title>Wordgame - Highscore</title>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.js"></script>
+    <script src="./js/highscoreApp.js"></script>
+
+    <h1>Highscore list</h1>
+
+    <table class="table" ng-controller="HighscoreCtrl">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="entry in entries">
+          <td>{{entry.name}}</td>
+          <td>{{entry.points}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+  </body>
+</html>
