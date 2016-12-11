@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html ng-app="wordgameApp">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>Wordgame</title>
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="./css/style.css" />
+    </head>
+    <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-route.js"></script>
+        <script src="./js/wordgameApp.js"></script>
+
+        <!-- TODO mk: styling -->
+
+        <p class="well">
+            <a href="#/">Home</a> | <a href="#/highscore">Highscore</a>
+        </p>
+        <div ng-view></div>
+
+    </body>
+</html>
