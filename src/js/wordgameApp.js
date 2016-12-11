@@ -1,3 +1,6 @@
+var TIME_PER_GAME = 40; // constant amount of seconds per game
+
+// module for the game app. Bundling all controllers within this one module since it's a rather small application
 angular.module('wordgameApp', ['ngRoute'])
   // general controller for the 'how to play the game' page
   .controller('MainCtrl', function($scope) {
@@ -6,6 +9,51 @@ angular.module('wordgameApp', ['ngRoute'])
 
   // controller for the actual game
   .controller('GameCtrl', function($scope) {
+
+    $scope.userName = ""; // holds the current user's name
+    $scope.userNameEntered = false; // no user name set in the beginning
+    $scope.gameScore = 0; // the user's total game score
+    $scope.currentWordScore = 0; // the user's points for the currently displayed word
+    $scope.remainingTime = TIME_PER_GAME; // remaining game time in seconds
+
+    /**
+     * Starts the actual game.
+     */
+    $scope.startGame = function() {
+
+        console.log("Game started!"); // TODO mk
+        console.log("Welcome user " + $scope.userName);
+
+        $scope.userNameEntered = true;
+
+        // reset variables
+        $scope.gameScore = 0;
+        $scope.currentWordScore = 0;
+        $scope.remainingTime = TIME_PER_GAME;
+
+        // TODO mk: load the list of words, mingle them and then start a timer and show word after word
+
+
+
+    }
+
+
+    /**
+     * Ends the game. The user's points will be stored on the server and the highscore list is shown afterwards.
+     */
+    $scope.endGame = function() {
+
+        // TODO mk: send result to server via REST
+        console.log("Game has ended. Reached score: " + $scope.gameScore); // TODO mk
+
+
+
+        // forward to highscore list
+        // TODO mk (if possible, also highlight the current result)
+
+    };
+
+
     // TODO mk
   })
 

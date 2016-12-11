@@ -1,6 +1,19 @@
 <div ng-controller="GameCtrl">
-
-    <!-- TODO mk -->
-    Game coming soon...
+    <!-- ask for user name if not yet logged-in -->
+    <div ng-hide="userNameEntered">
+        <label for="userNameInput">Please enter your name</label>
+        <div class="input-group">
+            <input id="userNameInput" type="text" ng-model="userName" class="form-control" placeholder="Your name" />
+            <span class="input-group-btn">
+                <!-- button to start the game. Set to disabled until something is entered in the name input field -->
+                <button class="btn btn-default" type="button" ng-click="startGame()" ng-disabled="!userName">Go!</button>
+            </span>
+        </div>
+    </div>
+    <!-- user is already logged-in. Start the game right away -->
+    <div ng-show="userNameEntered">
+        <!-- TODO mk -->
+        Game coming soon...
+    </div>
 
 </div>
