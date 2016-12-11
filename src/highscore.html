@@ -19,7 +19,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="entry in entries">
+        <tr ng-repeat="entry in getOrderedEntries()">
           <td>{{entry.name}}</td>
           <td>{{entry.points}}</td>
         </tr>

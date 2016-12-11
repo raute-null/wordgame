@@ -17,4 +17,30 @@ angular.module('highscoreApp', [])
       { id: 12, name: "Lars Tromeke",         points: 6 },
       { id: 13, name: "Paulo Maldini",        points: 1 }
     ];
+
+    // TODO mk: order entries by points descending...
+    $scope.getOrderedEntries = function() {
+        var self = this;
+
+        // TODO mk: check if entries are already loaded. Load them if they aren't, yet.
+
+        var orderedEntries = self.entries;
+        orderedEntries = orderedEntries.sort(function(a, b) {
+            // order the highscore entries by points descending, name ascending
+            if (a.points !== b.points) {
+                // scores are different so order by score only (descending)
+                return b.points - a.points;
+            }
+            // same score. Order by name ascending
+            if (a.name < b.name) {
+                return -1;
+            } else if (a.name > b.name) {
+                return 1;
+            }
+            // basically the same entry
+            return 0;
+        });
+        return orderedEntries;
+    };
+
   });
