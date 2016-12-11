@@ -24,7 +24,6 @@ angular.module('wordgameApp', ['ngRoute'])
     $scope.currentMangledWord = ""; // the mangled version of the word that we're currently looking for
     $scope.currentWordInput = ""; // the user's input
     $scope.wordsForGameRound = []; // the words to be used in the game round
-    $scope.timer = null; // the timer to count down the game time
 
     /**
      * Starts the actual game.
@@ -158,7 +157,7 @@ angular.module('wordgameApp', ['ngRoute'])
      * Sets up a timer to count down the seconds of the game.
      */
     function setupTimer() {
-        $scope.timer = $interval(function() {
+        $interval(function() {
             // subtract one second from the remaining game time. Check if end has been reached.
             $scope.remainingTime = Math.max(0, --$scope.remainingTime);
             if ($scope.remainingTime === 0) {
