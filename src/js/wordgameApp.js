@@ -8,7 +8,7 @@ angular.module('wordgameApp', ['ngRoute'])
 
 
   // controller for the actual game
-  .controller('GameCtrl', function($scope) {
+  .controller('GameCtrl', function($scope, $interval) {
 
     // define some constants
     var KEYCODE_BACKSPACE = 8;
@@ -23,7 +23,8 @@ angular.module('wordgameApp', ['ngRoute'])
     $scope.currentUnmangledWord = ""; // the word that we're currently looking for
     $scope.currentMangledWord = ""; // the mangled version of the word that we're currently looking for
     $scope.currentWordInput = ""; // the user's input
-    $scope.wordsForGameRound = [];
+    $scope.wordsForGameRound = []; // the words to be used in the game round
+    $scope.timer = null; // the timer to count down the game time
 
     /**
      * Starts the actual game.
@@ -49,6 +50,9 @@ angular.module('wordgameApp', ['ngRoute'])
         console.log("Loading words..."); // TODO mk
 
         // TODO mk: words need to be fetched via REST call
+        // TODO mk: make sure that there are quite a few words in the DB so that
+        //          a) the user won't be able to see all of them within one round of playing
+        //          b) the user won't know all of them after only a few rounds of playing
 
         // TODO mk: hard-coded for now...
         $scope.words = [
@@ -86,11 +90,19 @@ angular.module('wordgameApp', ['ngRoute'])
         angular.forEach($scope.words, function(value, key) {
             var wordEntry = {};
             wordEntry.original = value.word.toUpperCase();
-            wordEntry.mangled = mangleWord(wordEntry.original);
+
+            // create a mangled version of the word. Use up to 10 tries to make sure that the word is actually different
+            for (var i = 0; i < 10; i++) {
+                wordEntry.mangled = mangleWord(wordEntry.original);
+                if (wordEntry.mangled !== wordEntry.original) {
+                    break;
+                }
+            }
             $scope.wordsForGameRound.push(wordEntry);
         });
 
         // words are mangled now. Time to play!
+        setupTimer();
         nextWord();
     };
 
@@ -140,7 +152,20 @@ angular.module('wordgameApp', ['ngRoute'])
         $scope.currentWordScore = Math.floor(Math.pow(1.95, ($scope.currentUnmangledWord.length / 3)));
 
         console.log("The maximum score for this word is: " + $scope.currentWordScore); // TODO mk
-    };
+    }
+
+    /**
+     * Sets up a timer to count down the seconds of the game.
+     */
+    function setupTimer() {
+        $scope.timer = $interval(function() {
+            // subtract one second from the remaining game time. Check if end has been reached.
+            $scope.remainingTime = Math.max(0, --$scope.remainingTime);
+            if ($scope.remainingTime === 0) {
+                $scope.endGame();
+            }
+        }, 1000, TIME_PER_GAME);
+    }
 
     /**
      * Checks the currently entered value and compares it to the word that we're looking for. If the entered text
@@ -181,8 +206,6 @@ angular.module('wordgameApp', ['ngRoute'])
 
         // TODO mk: send result to server via REST
         console.log("Game has ended. Reached score: " + $scope.gameScore); // TODO mk
-
-
 
         // forward to highscore list
         // TODO mk (if possible, also highlight the current result)
