@@ -12,8 +12,33 @@
     </div>
     <!-- user is already logged-in. Start the game right away -->
     <div ng-show="userNameEntered">
-        <!-- TODO mk -->
-        Game coming soon...
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>User {{userName}}</th>
+                    <th>Current score: {{gameScore}}</th>
+                    <th>Time left: {{remainingTime}}s</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <!-- displays the word that we're searching in mangled form (mixed-up characters) -->
+                        <div id="mangledWord">{{currentMangledWord}}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <!-- input field for the user to enter his solution which is checked upon every entered key -->
+                        <input ng-model="currentWordInput" ng-keyup="checkCurrentInput($event)" />
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+
+
     </div>
 
 </div>

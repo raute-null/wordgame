@@ -1,4 +1,6 @@
 var TIME_PER_GAME = 40; // constant amount of seconds per game
+var KEYCODE_BACKSPACE = 8;
+var KEYCODE_DELETE = 46;
 
 // module for the game app. Bundling all controllers within this one module since it's a rather small application
 angular.module('wordgameApp', ['ngRoute'])
@@ -15,6 +17,9 @@ angular.module('wordgameApp', ['ngRoute'])
     $scope.gameScore = 0; // the user's total game score
     $scope.currentWordScore = 0; // the user's points for the currently displayed word
     $scope.remainingTime = TIME_PER_GAME; // remaining game time in seconds
+    $scope.currentUnmangledWord = ""; // the word that we're currently looking for
+    $scope.currentMangledWord = ""; // the mangled version of the word that we're currently looking for
+    $scope.currentWordInput = ""; // the user's input
 
     /**
      * Starts the actual game.
@@ -28,15 +33,91 @@ angular.module('wordgameApp', ['ngRoute'])
 
         // reset variables
         $scope.gameScore = 0;
-        $scope.currentWordScore = 0;
         $scope.remainingTime = TIME_PER_GAME;
 
         // TODO mk: load the list of words, mingle them and then start a timer and show word after word
 
+        $scope.nextWord();
 
+    };
 
-    }
+    /**
+     * Loads a list of words for the game.
+     */
+    $scope.loadWordList = function() {
+        // TODO mk: words need to be fetched via REST call
 
+        // TODO mk: hard-coded for now...
+        $scope.words = [
+            { id: 1,  word: "pizza" },
+            { id: 2,  word: "pasta" },
+            { id: 3,  word: "auto" },
+            { id: 4,  word: "universe" },
+            { id: 5,  word: "application" },
+            { id: 6,  word: "phone" },
+            { id: 7,  word: "garden" },
+            { id: 8,  word: "hospital" },
+            { id: 9,  word: "sofa" },
+            { id: 10, word: "computer" },
+            { id: 11, word: "program" },
+            { id: 12, word: "earth" },
+            { id: 13, word: "potato" }
+          ];
+
+    };
+
+    /**
+     * Loads the next word from the list, creates the mangled version of it and calculates the maximum amount of points
+     * for it.
+     */
+    $scope.nextWord = function() {
+        // reset user input
+        $scope.currentWordInput = "";
+
+        // TODO mk: get next word from list
+        $scope.currentUnmangledWord = "TEST"; // TODO mk: hard-coded for now...
+        $scope.currentMangledWord = "ESTT";
+
+        console.log("The next word that we're looking for is: " + $scope.currentUnmangledWord); // TODO mk
+        console.log("Mangled into: " + $scope.currentMangledWord); // TODO mk
+
+        // calculate the maximum score for this word
+        $scope.currentWordScore = Math.floor(Math.pow(1.95, ($scope.currentUnmangledWord.length / 3)));
+
+        console.log("The maximum score for this word is: " + $scope.currentWordScore); // TODO mk
+    };
+
+    /**
+     * Checks the currently entered value and compares it to the word that we're looking for. If the entered text
+     * matches then we calculate the points for the solution and add them to the total points. We then empty the text
+     * input and show the next mangled word.
+     * In case the word is wrong nothing is done and the user has to continue guessing.
+     *
+     * @param keyEvent the keyboard event
+     */
+    $scope.checkCurrentInput = function(keyEvent) {
+
+        console.log("Will now check if " + $scope.currentWordInput + " is what we're looking for ("
+            + $scope.currentUnmangledWord + ")..."); // TODO mk
+
+        // deduct a point if delete key was pressed...
+        if (keyEvent.which === KEYCODE_BACKSPACE || keyEvent.which === KEYCODE_DELETE) {
+            $scope.currentWordScore = Math.max(0, --$scope.currentWordScore);
+
+            console.log("The current score for the word is " + $scope.currentWordScore);
+
+        } else if ($scope.currentWordInput.toUpperCase() === $scope.currentUnmangledWord.toUpperCase()) {
+            // Bingo, correct word found! Calculate points and add to total score
+            $scope.gameScore += $scope.currentWordScore;
+
+            console.log("Word found! Points added: " + $scope.currentWordScore + ". Going to next one."); // TODO mk
+
+            $scope.nextWord();
+        }
+
+        // TODO mk: in case the current score for this word is 0 we could switch to the next one...
+
+    };
 
     /**
      * Ends the game. The user's points will be stored on the server and the highscore list is shown afterwards.
