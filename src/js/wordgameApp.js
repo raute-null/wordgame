@@ -1,3 +1,5 @@
+'use strict';
+
 // module for the game app. Bundling all controllers within this one module since it's a rather small application
 angular.module('wordgameApp', ['ngRoute'])
 
@@ -7,7 +9,9 @@ angular.module('wordgameApp', ['ngRoute'])
     // define some constants
     var KEYCODE_BACKSPACE = 8;
     var KEYCODE_DELETE = 46;
-    var TIME_PER_GAME = 40; // constant amount of seconds per game
+    //var TIME_PER_GAME = 40; // constant amount of seconds per game
+
+var TIME_PER_GAME = 10;
 
     $scope.userName = ""; // holds the current user's name
     $scope.userNameEntered = false; // no user name set in the beginning
@@ -96,6 +100,7 @@ angular.module('wordgameApp', ['ngRoute'])
 
     /**
      * Shuffles array in place.
+     *
      * @param {Array} arr items The array containing the items.
      */
     function shuffle(arr) {
@@ -185,34 +190,20 @@ angular.module('wordgameApp', ['ngRoute'])
 
 
   // controller for the highscore list
-  .controller('HighscoreCtrl', function($scope) {
-      // define highscore entries statically for now. Will later be loaded via REST
+  .controller('HighscoreCtrl', function($scope, $http) {
+      // define highscore entries in static JSON file for now. Load it via a service. Will later be loaded via REST
       // TODO mk: load via REST...
-      $scope.entries = [
-        { id: 1,  name: "Manuel Schwarz",       points: 22 },
-        { id: 2,  name: "Max Müller",           points: 21 },
-        { id: 3,  name: "Frank Budenholzer",    points: 14 },
-        { id: 4,  name: "Bernd Stromberg",      points: 8 },
-        { id: 5,  name: "Berthold Heisterkamp", points: 8 },
-        { id: 6,  name: "Erika Bellstedt",      points: 8 },
-        { id: 7,  name: "Michael Scott",        points: 11 },
-        { id: 8,  name: "Fridolin Meyer",       points: 9 },
-        { id: 9,  name: "Hugo Hermelin",        points: 20 },
-        { id: 10, name: "Gundula Gause",        points: 12 },
-        { id: 11, name: "Pete Glocke",          points: 7 },
-        { id: 12, name: "Lars Tromeke",         points: 6 },
-        { id: 13, name: "Paulo Maldini",        points: 1 }
-      ];
+      $http.get('./js/highscore_list.json').then(function(highscoreResponse) {
+        $scope.entries = orderHighscoreEntries(highscoreResponse.data);
+      });
 
       /**
-       * Returns the current highscore list ordered by score descending, name ascending.
+       * Returns the given highscore list ordered by score descending, name ascending.
+       *
+       * @param unorderedEntries the unordered highscore list
        */
-      $scope.getOrderedEntries = function() {
-          var self = this;
-
-          // TODO mk: check if entries are already loaded. Load them if they aren't, yet.
-
-          var orderedEntries = self.entries;
+      function orderHighscoreEntries(unorderedEntries) {
+          var orderedEntries = unorderedEntries;
           orderedEntries = orderedEntries.sort(function(a, b) {
               // order the highscore entries by points descending, name ascending
               if (a.points !== b.points) {
