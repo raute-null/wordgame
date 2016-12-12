@@ -9,9 +9,7 @@ angular.module('wordgameApp', ['ngRoute'])
     // define some constants
     var KEYCODE_BACKSPACE = 8;
     var KEYCODE_DELETE = 46;
-    //var TIME_PER_GAME = 40; // constant amount of seconds per game
-
-var TIME_PER_GAME = 10;
+    var TIME_PER_GAME = 40; // constant amount of seconds per game
 
     $scope.userName = ""; // holds the current user's name
     $scope.userNameEntered = false; // no user name set in the beginning
