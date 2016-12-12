@@ -1,12 +1,6 @@
 // module for the game app. Bundling all controllers within this one module since it's a rather small application
 angular.module('wordgameApp', ['ngRoute'])
 
-  // general controller for the 'how to play the game' page
-  .controller('MainCtrl', function($scope) {
-    // TODO mk: is this controller needed at all? The dummy one could be sufficient in this case...
-  })
-
-
   // controller for the actual game
   .controller('GameCtrl', function($scope, $interval) {
 
