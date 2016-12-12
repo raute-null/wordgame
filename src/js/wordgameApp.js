@@ -4,7 +4,7 @@
 angular.module('wordgameApp', ['ngRoute'])
 
   // controller for the actual game
-  .controller('GameCtrl', function($scope, $interval) {
+  .controller('GameCtrl', function($scope, $interval, $http) {
 
     // define some constants
     var KEYCODE_BACKSPACE = 8;
@@ -20,6 +20,8 @@ angular.module('wordgameApp', ['ngRoute'])
     $scope.currentMangledWord = ""; // the mangled version of the word that we're currently looking for
     $scope.currentWordInput = ""; // the user's input
     $scope.wordsForGameRound = []; // the words to be used in the game round
+
+    $scope.focusInput = false;
 
     /**
      * Starts the actual game.
@@ -39,31 +41,15 @@ angular.module('wordgameApp', ['ngRoute'])
      * Loads a list of words for the game.
      */
     $scope.loadWordList = function() {
-        console.log("Loading words..."); // TODO mk
-
         // TODO mk: words need to be fetched via REST call
         // TODO mk: make sure that there are quite a few words in the DB so that
         //          a) the user won't be able to see all of them within one round of playing
         //          b) the user won't know all of them after only a few rounds of playing
-
-        // TODO mk: hard-coded for now...
-        $scope.words = [
-            { id: 1,  word: "pizza" },
-            { id: 2,  word: "pasta" },
-            { id: 3,  word: "auto" },
-            { id: 4,  word: "universe" },
-            { id: 5,  word: "application" },
-            { id: 6,  word: "phone" },
-            { id: 7,  word: "garden" },
-            { id: 8,  word: "hospital" },
-            { id: 9,  word: "sofa" },
-            { id: 10, word: "computer" },
-            { id: 11, word: "program" },
-            { id: 12, word: "earth" },
-            { id: 13, word: "potato" }
-          ];
-
-        $scope.mangleWords();
+        // TODO mk: load from file for now
+        $http.get('./js/word_list.json').then(function(wordListResponse) {
+            $scope.words = wordListResponse.data;
+            $scope.mangleWords();
+        });
     };
 
     /**
@@ -94,6 +80,10 @@ angular.module('wordgameApp', ['ngRoute'])
         // words are mangled now. Time to play!
         setupTimer();
         nextWord();
+        // broadcast an event on which the word input text field will listen to put the focus into the text field
+        // right from the start of the game
+        // TODO mk: does not add the classes to the text input field yet which would make it show the 'glow' effect...
+        $scope.$broadcast('gameStarted');
     };
 
     /**
@@ -138,8 +128,6 @@ angular.module('wordgameApp', ['ngRoute'])
 
         // calculate the maximum score for this word
         $scope.currentWordScore = Math.floor(Math.pow(1.95, ($scope.currentUnmangledWord.length / 3)));
-
-        // TODO mk: should set the focus on the input text field so the user can start typing right away...
     }
 
     /**
@@ -184,6 +172,16 @@ angular.module('wordgameApp', ['ngRoute'])
         // TODO mk: send result to server via REST
 
     };
+  })
+
+
+  // add directive to listen on event to trigger a focus of the element
+  .directive('focusOn', function() {
+    return function(scope, elem, attr) {
+        scope.$on(attr.focusOn, function(e) {
+            elem[0].focus();
+        });
+     };
   })
 
 
