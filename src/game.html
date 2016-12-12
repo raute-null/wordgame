@@ -11,14 +11,14 @@
         </div>
     </div>
     <!-- user is already logged-in. Start the game right away -->
-    <div ng-show="userNameEntered">
+    <div ng-show="userNameEntered && remainingTime > 0">
 
         <table class="table">
             <thead>
                 <tr>
-                    <th>User {{userName}}</th>
-                    <th>Current score: {{gameScore}}</th>
-                    <th>Time left: {{remainingTime}}s</th>
+                    <th>Player {{userName}}</th>
+                    <th>Current score: <span id="currentGameScore" class="score">{{gameScore}}</span></th>
+                    <th>Time left: <span id="timer">{{remainingTime}}</span>s</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,7 +38,13 @@
 
         </table>
 
+    </div>
 
+    <!-- Game over: show final score -->
+    <div ng-show="remainingTime == 0">
+        <div class="">Game over</div>
+        <div class="">Your score {{userName}}: <span id="finalGameScore" class="score">{{gameScore}}</span> points!</div>
+        <div class="">Show <a href="#/highscore">Highscore</a></div>
     </div>
 
 </div>
