@@ -1,3 +1,41 @@
 body {
   
 }
+
+#startGameBtn,
+#highscoreBtn {
+    height: 140px;
+    width: 140px;
+}
+
+#startGameBtn {
+    line-height: 120px;
+}
+
+#highscoreBtn {
+    line-height: 124px;
+    font-size: 17px;
+}
+
+#mangledWord {
+    font-size: 50px;
+    line-height: 200px;
+}
+
+#player,
+#score,
+#timer {
+    font-size: 30px;
+    display: inline-block;
+    font-family: monospace;
+    text-align: center;
+}
+
+#timer {
+    width: 50px;
+
+}
+
+#gameTable {
+
+}

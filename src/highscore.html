@@ -1,16 +1,26 @@
-<h1>Highscore list</h1>
+<div class="intro-body">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
 
-<table class="table" ng-controller="HighscoreCtrl">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Score</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-repeat="entry in entries">
-      <td>{{entry.name}}</td>
-      <td>{{entry.points}}</td>
-    </tr>
-  </tbody>
-</table>
+        <h1>Highscore list</h1>
+
+        <table class="table" ng-controller="HighscoreCtrl">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="entry in entries">
+              <td>{{entry.name}}</td>
+              <td>{{entry.points}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,18 +5,48 @@
         <title>Wordgame</title>
         <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
         <link rel="stylesheet" href="./css/style.css" />
+
+        <!-- Custom Fonts -->
+        <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+
+        <!-- Theme CSS -->
+        <link href="./css/grayscale.css" rel="stylesheet">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
     </head>
-    <body>
+    <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-route.js"></script>
         <script src="./js/wordgameApp.js"></script>
 
-        <!-- TODO mk: styling -->
+        <!-- Navigation -->
+        <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-toggle page-scroll" href="#/highscore">Highscore</a>
+                    <a class="navbar-brand page-scroll" href="#/">Start</a>
+                </div>
 
-        <p class="well">
-            <a href="#/">Home</a> | <a href="#/highscore">Highscore</a>
-        </p>
-        <div ng-view></div>
+                <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a class="page-scroll" href="#/highscore">Highscore</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Intro Header -->
+        <header class="intro" ng-view></header>
 
     </body>
 </html>

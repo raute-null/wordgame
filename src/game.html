@@ -1,48 +1,66 @@
-<div ng-controller="GameCtrl">
-    <!-- ask for user name if not yet logged-in -->
-    <div ng-hide="userNameEntered">
-        <label for="userNameInput">Please enter your name</label>
-        <div class="input-group">
-            <input id="userNameInput" type="text" ng-model="userName" class="form-control" placeholder="Your name" />
-            <span class="input-group-btn">
-                <!-- button to start the game. Set to disabled until something is entered in the name input field -->
-                <button class="btn btn-default" type="button" ng-click="startGame()" ng-disabled="!userName">Go!</button>
-            </span>
+<div class="intro-body">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+
+                <div ng-controller="GameCtrl">
+                    <!-- ask for user name if not yet logged-in -->
+                    <div ng-hide="userNameEntered">
+                        <label for="userNameInput">Please enter your name</label>
+                        <div class="input-group">
+                            <input id="userNameInput" type="text" ng-model="userName" class="form-control" placeholder="Your name" />
+                            <span class="input-group-btn">
+                                <!-- button to start the game. Set to disabled until something is entered in the name input field -->
+                                <button class="btn btn-default" type="button" ng-click="startGame()" ng-disabled="!userName">Play!</button>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- user is already logged-in. Start the game right away -->
+                    <div ng-show="userNameEntered && remainingTime > 0">
+
+                        <table id="gameTable" class="table">
+                            <thead>
+                            <tr>
+                                <th>Player <span id="player">{{userName}}</span></th>
+                                <th>Current score: <span id="score">{{gameScore}}</span></th>
+                                <th>Time left: <span id="timer">{{remainingTime}}</span>s</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="3">
+                                    <!-- displays the word that we're searching in mangled form (mixed-up characters) -->
+                                    <div id="mangledWord">{{currentMangledWord}}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <!-- input field for the user to enter his solution which is checked upon every entered key -->
+                                    <input ng-model="currentWordInput" ng-keyup="checkCurrentInput($event)" focus-on="gameStarted" />
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!-- Game over: show final score -->
+                    <div ng-show="remainingTime == 0">
+                        <h1 class="brand-heading">Game over</h1>
+                        <p class="intro-text">Your score {{userName}}:
+                            <span id="finalGameScore" class="score">{{gameScore}}</span>
+                            points!
+                        </p>
+                        <a href="#/highscore" id="highscoreBtn" class="btn btn-circle page-scroll">
+                            Highscore
+                        </a>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
-    <!-- user is already logged-in. Start the game right away -->
-    <div ng-show="userNameEntered && remainingTime > 0">
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Player {{userName}}</th>
-                    <th>Current score: <span id="currentGameScore" class="score">{{gameScore}}</span></th>
-                    <th>Time left: <span id="timer">{{remainingTime}}</span>s</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="3">
-                        <!-- displays the word that we're searching in mangled form (mixed-up characters) -->
-                        <div id="mangledWord">{{currentMangledWord}}</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <!-- input field for the user to enter his solution which is checked upon every entered key -->
-                        <input ng-model="currentWordInput" ng-keyup="checkCurrentInput($event)" focus-on="gameStarted" />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-    </div>
-
-    <!-- Game over: show final score -->
-    <div ng-show="remainingTime == 0">
-        <div class="">Game over</div>
-        <div class="">Your score {{userName}}: <span id="finalGameScore" class="score">{{gameScore}}</span> points!</div>
-        <div class="">Show <a href="#/highscore">Highscore</a></div>
-    </div>
 </div>
+
+
+
