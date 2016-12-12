@@ -23,9 +23,6 @@ angular.module('wordgameApp', ['ngRoute'])
      * Starts the actual game.
      */
     $scope.startGame = function() {
-        console.log("Game started!"); // TODO mk
-        console.log("Welcome user " + $scope.userName); // TODO mk
-
         $scope.userNameEntered = true;
 
         // reset variables
@@ -73,8 +70,6 @@ angular.module('wordgameApp', ['ngRoute'])
      * game round.
      */
     $scope.mangleWords = function() {
-        console.log("Mangling words..."); // TODO mk
-
         $scope.wordsForGameRound = [];
 
         shuffle($scope.words);
@@ -138,13 +133,10 @@ angular.module('wordgameApp', ['ngRoute'])
         $scope.currentUnmangledWord = nextWordEntry.original;
         $scope.currentMangledWord = nextWordEntry.mangled;
 
-        console.log("The next word that we're looking for is: " + $scope.currentUnmangledWord); // TODO mk
-        console.log("Mangled into: " + $scope.currentMangledWord); // TODO mk
-
         // calculate the maximum score for this word
         $scope.currentWordScore = Math.floor(Math.pow(1.95, ($scope.currentUnmangledWord.length / 3)));
 
-        console.log("The maximum score for this word is: " + $scope.currentWordScore); // TODO mk
+        // TODO mk: should set the focus on the input text field so the user can start typing right away...
     }
 
     /**
@@ -169,27 +161,16 @@ angular.module('wordgameApp', ['ngRoute'])
      * @param keyEvent the keyboard event
      */
     $scope.checkCurrentInput = function(keyEvent) {
-
-        console.log("Will now check if " + $scope.currentWordInput + " is what we're looking for ("
-            + $scope.currentUnmangledWord + ")..."); // TODO mk
-
         // deduct a point if delete key was pressed...
         if (keyEvent.which === KEYCODE_BACKSPACE || keyEvent.which === KEYCODE_DELETE) {
             $scope.currentWordScore = Math.max(0, --$scope.currentWordScore);
-
-            console.log("The current score for the word is " + $scope.currentWordScore);
-
         } else if ($scope.currentWordInput.toUpperCase() === $scope.currentUnmangledWord.toUpperCase()) {
             // Bingo, correct word found! Calculate points and add to total score
             $scope.gameScore += $scope.currentWordScore;
-
-            console.log("Word found! Points added: " + $scope.currentWordScore + ". Going to next one."); // TODO mk
-
             nextWord();
         }
 
         // TODO mk: in case the current score for this word is 0 we could switch to the next one...
-
     };
 
     /**
@@ -198,15 +179,8 @@ angular.module('wordgameApp', ['ngRoute'])
     $scope.endGame = function() {
 
         // TODO mk: send result to server via REST
-        console.log("Game has ended. Reached score: " + $scope.gameScore); // TODO mk
-
-        // forward to highscore list
-        // TODO mk (if possible, also highlight the current result)
 
     };
-
-
-    // TODO mk
   })
 
 
