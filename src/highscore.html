@@ -17,7 +17,7 @@
             <tr ng-repeat="entry in entries">
               <td>{{entry.player}}</td>
               <td>{{entry.score}}</td>
-              <td>{{entry.timestamp}}</td>
+              <td>{{entry.timestamp | date:'dd.MM.yyyy HH:mm'}}</td>
             </tr>
           </tbody>
         </table>

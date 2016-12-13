@@ -45,6 +45,10 @@ angular.module('wordgameApp', ['ngRoute'])
         $http.get('./api.php/words').then(function(wordListResponse) {
             $scope.words = wordListResponse.data.words.records;
             $scope.mangleWords();
+        }, function(error) {
+            if (console) {
+                console.error(error);
+            }
         });
     };
 
@@ -61,7 +65,7 @@ angular.module('wordgameApp', ['ngRoute'])
         // iterate over each word and store the original and mangled version in an array of words for this game round
         angular.forEach($scope.words, function(value, key) {
             var wordEntry = {};
-            wordEntry.original = value[1].toUpperCase();
+            wordEntry.original = value[1].toUpperCase(); // the actual word comes as second field from the server
 
             // create a mangled version of the word. Use up to 10 tries to make sure that the word is actually different
             for (var i = 0; i < 10; i++) {
@@ -157,7 +161,10 @@ angular.module('wordgameApp', ['ngRoute'])
             nextWord();
         }
 
-        // TODO mk: in case the current score for this word is 0 we could switch to the next one...
+        // in case the current score for this word is 0 we switch to the next one
+        if ($scope.currentWordScore === 0) {
+            nextWord();
+        }
     };
 
     /**
@@ -183,11 +190,30 @@ angular.module('wordgameApp', ['ngRoute'])
 
   // controller for the highscore list
   .controller('HighscoreCtrl', function($scope, $http) {
-      // define highscore entries in static JSON file for now. Load it via a service. Will later be loaded via REST
-      // TODO mk: load via REST...
-      $http.get('./js/highscore_list.json').then(function(highscoreResponse) {
-        $scope.entries = orderHighscoreEntries(highscoreResponse.data);
+      // load highscore entries from server via REST call
+      $http.get('./api.php/highscore').then(function(highscoreResponse) {
+        $scope.entries = orderHighscoreEntries(normalizeHighscoreEntries(highscoreResponse.data.highscore.records));
+      }, function(error) {
+        if (console) {
+            console.error(error);
+        }
       });
+
+      /**
+       * Little helper function that transforms the data that is being retrieved from the server into proper JSON format.
+       */
+      function normalizeHighscoreEntries(retrievedEntries) {
+        // retrieved columns are ["id","player","score","timestamp"]
+        var ret = [];
+        angular.forEach(retrievedEntries, function(value, key){
+            ret.push({
+                "player": value[1],
+                "score": value[2],
+                "timestamp": new Date(Date.parse(value[3]))
+            });
+        });
+        return ret;
+      }
 
       /**
        * Returns the given highscore list ordered by score descending, name ascending.
@@ -198,14 +224,14 @@ angular.module('wordgameApp', ['ngRoute'])
           var orderedEntries = unorderedEntries;
           orderedEntries = orderedEntries.sort(function(a, b) {
               // order the highscore entries by points descending, name ascending
-              if (a.points !== b.points) {
+              if (a.score !== b.score) {
                   // scores are different so order by score only (descending)
-                  return b.points - a.points;
+                  return b.score - a.score;
               }
               // same score. Order by name ascending
-              if (a.name < b.name) {
+              if (a.player < b.player) {
                   return -1;
-              } else if (a.name > b.name) {
+              } else if (a.player > b.player) {
                   return 1;
               }
               // basically the same entry
