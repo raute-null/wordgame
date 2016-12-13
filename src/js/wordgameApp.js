@@ -171,11 +171,15 @@ angular.module('wordgameApp', ['ngRoute'])
      * Ends the game. The user's points will be stored on the server and the highscore list is shown afterwards.
      */
     $scope.endGame = function() {
+        // TODO mk: hack for now. Should actually send the date along with time zone information...
+        var now = new Date();
+        now.setHours(now.getHours() + 1);
+
         // send result to server to store it in the highscore list
         $http.post('./api.php/highscore', {
             "player": $scope.userName, // TODO mk: user name should probably be safely encoded prior to sending to database...
             "score": $scope.gameScore,
-            "timestamp": new Date().addHours(1) // TODO mk: hack for now. Should actually send the date along with time zone information...
+            "timestamp": now
         }).then(function(success) {
             // NOP
         }, function(error) {
