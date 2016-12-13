@@ -22,7 +22,7 @@
                             <thead>
                             <tr>
                                 <th>Player <span id="player">{{userName}}</span></th>
-                                <th>Current score: <span id="score">{{gameScore}}</span></th>
+                                <th>Current score: <span id="score">{{gameScore}}</span> points</th>
                                 <th>Time left: <span id="timer">{{remainingTime}}</span>s</th>
                             </tr>
                             </thead>
@@ -47,7 +47,7 @@
                     <!-- Game over: show final score -->
                     <div ng-show="remainingTime == 0">
                         <h1 class="brand-heading">Game over</h1>
-                        <p class="intro-text">Your score {{userName}}:
+                        <p class="intro-text">Congratulations {{userName}}! You reached
                             <span id="finalGameScore" class="score">{{gameScore}}</span>
                             points!
                         </p>

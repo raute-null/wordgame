@@ -41,13 +41,9 @@ angular.module('wordgameApp', ['ngRoute'])
      * Loads a list of words for the game.
      */
     $scope.loadWordList = function() {
-        // TODO mk: words need to be fetched via REST call
-        // TODO mk: make sure that there are quite a few words in the DB so that
-        //          a) the user won't be able to see all of them within one round of playing
-        //          b) the user won't know all of them after only a few rounds of playing
-        // TODO mk: load from file for now
-        $http.get('./js/word_list.json').then(function(wordListResponse) {
-            $scope.words = wordListResponse.data;
+        // fetch list of words via REST call in form of JSON
+        $http.get('./api.php/words').then(function(wordListResponse) {
+            $scope.words = wordListResponse.data.words.records;
             $scope.mangleWords();
         });
     };
@@ -65,7 +61,7 @@ angular.module('wordgameApp', ['ngRoute'])
         // iterate over each word and store the original and mangled version in an array of words for this game round
         angular.forEach($scope.words, function(value, key) {
             var wordEntry = {};
-            wordEntry.original = value.word.toUpperCase();
+            wordEntry.original = value[1].toUpperCase();
 
             // create a mangled version of the word. Use up to 10 tries to make sure that the word is actually different
             for (var i = 0; i < 10; i++) {
