@@ -1,15 +1,15 @@
 [
-  { "id": 1,  "name": "Manuel Schwarz",       "points": 22 },
-  { "id": 2,  "name": "Max Müller",           "points": 21 },
-  { "id": 3,  "name": "Frank Budenholzer",    "points": 14 },
-  { "id": 4,  "name": "Bernd Stromberg",      "points": 8 },
-  { "id": 5,  "name": "Berthold Heisterkamp", "points": 8 },
-  { "id": 6,  "name": "Erika Bellstedt",      "points": 8 },
-  { "id": 7,  "name": "Michael Scott",        "points": 11 },
-  { "id": 8,  "name": "Fridolin Meyer",       "points": 9 },
-  { "id": 9,  "name": "Hugo Hermelin",        "points": 20 },
-  { "id": 10, "name": "Gundula Gause",        "points": 12 },
-  { "id": 11, "name": "Pete Glocke",          "points": 7 },
-  { "id": 12, "name": "Lars Tromeke",         "points": 6 },
-  { "id": 13, "name": "Paulo Maldini",        "points": 1 }
+  { "id": 1,  "player": "Manuel Schwarz",       "score": 22, "timestamp": "" },
+  { "id": 2,  "player": "Max Müller",           "score": 21, "timestamp": "" },
+  { "id": 3,  "player": "Frank Budenholzer",    "score": 14, "timestamp": "" },
+  { "id": 4,  "player": "Bernd Stromberg",      "score": 8,  "timestamp": "" },
+  { "id": 5,  "player": "Berthold Heisterkamp", "score": 8,  "timestamp": "" },
+  { "id": 6,  "player": "Erika Bellstedt",      "score": 8,  "timestamp": "" },
+  { "id": 7,  "player": "Michael Scott",        "score": 11, "timestamp": "" },
+  { "id": 8,  "player": "Fridolin Meyer",       "score": 9,  "timestamp": "" },
+  { "id": 9,  "player": "Hugo Hermelin",        "score": 20, "timestamp": "" },
+  { "id": 10, "player": "Gundula Gause",        "score": 12, "timestamp": "" },
+  { "id": 11, "player": "Pete Glocke",          "score": 7,  "timestamp": "" },
+  { "id": 12, "player": "Lars Tromeke",         "score": 6,  "timestamp": "" },
+  { "id": 13, "player": "Paulo Maldini",        "score": 1,  "timestamp": "" }
 ]

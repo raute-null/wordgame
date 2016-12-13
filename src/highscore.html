@@ -8,14 +8,16 @@
         <table class="table" ng-controller="HighscoreCtrl">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Player</th>
               <th>Score</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="entry in entries">
-              <td>{{entry.name}}</td>
-              <td>{{entry.points}}</td>
+              <td>{{entry.player}}</td>
+              <td>{{entry.score}}</td>
+              <td>{{entry.timestamp}}</td>
             </tr>
           </tbody>
         </table>
