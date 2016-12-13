@@ -177,7 +177,7 @@ angular.module('wordgameApp', ['ngRoute'])
             "score": $scope.gameScore,
             "timestamp": new Date().addHours(1) // TODO mk: hack for now. Should actually send the date along with time zone information...
         }).then(function(success) {
-            console.log(success);
+            // NOP
         }, function(error) {
             if (console) {
                 console.error(error);
